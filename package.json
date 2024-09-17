@@ -1,0 +1,42 @@
+{
+	"name": "Voria",
+	"version": "1.0.0",
+	"main": "src/index.js",
+	"author": "@sapphire",
+	"license": "UNLICENSE",
+	"type": "commonjs",
+	"dependencies": {
+		"@sapphire/discord-utilities": "^3.2.2",
+		"@sapphire/discord.js-utilities": "7.1.6",
+		"@sapphire/fetch": "^3.0.2",
+		"@sapphire/framework": "^5.0.7",
+		"@sapphire/plugin-api": "^6.1.1",
+		"@sapphire/plugin-editable-commands": "^4.0.2",
+		"@sapphire/plugin-logger": "^4.0.2",
+		"@sapphire/plugin-subcommands": "^6.0.3",
+		"@sapphire/time-utilities": "^1.7.12",
+		"@sapphire/type": "^2.4.4",
+		"@sapphire/utilities": "^3.15.3",
+		"axios": "^1.7.2",
+		"canvacord": "^6.0.2",
+		"discord.js": "^14.14.1",
+		"mongoose": "^8.5.1",
+		"node-cron": "^3.0.3",
+		"systeminformation": "^5.22.11"
+	},
+	"devDependencies": {
+		"@sapphire/cli": "^1.9.3",
+		"@sapphire/prettier-config": "^2.0.0",
+		"nodemon": "^3.0.3",
+		"npm-run-all2": "^6.1.1",
+		"prettier": "^3.2.4"
+	},
+	"scripts": {
+		"sapphire": "sapphire",
+		"generate": "sapphire generate",
+		"watch": "nodemon -L --watch src",
+		"start": "node src/index.js",
+		"format": "prettier --write \"src/**/*.js\""
+	},
+	"prettier": "@sapphire/prettier-config"
+}

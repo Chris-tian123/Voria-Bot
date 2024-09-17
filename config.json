@@ -1,0 +1,5 @@
+{
+	"discord_token": "Your_Bot_TOKEN",
+	"prefix": "Youre_prefix",
+	"owners": ["Your_User_ID", "Friend_User_ID"]
+}
