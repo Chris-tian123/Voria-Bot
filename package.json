@@ -1,7 +1,7 @@
 {
 	"name": "Voria",
 	"version": "1.0.0",
-	"main": "src/index.js",
+	"main": "index.js",
 	"author": "@sapphire",
 	"license": "UNLICENSE",
 	"type": "commonjs",
