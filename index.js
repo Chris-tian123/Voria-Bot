@@ -1,3 +1,12 @@
+const fs = require('fs');
+const path = './commands/General/credits.js'; // Path to the file you want to check
+
+// Check if the file exists
+if (!fs.existsSync(path)) {
+    console.error(`Error: ${path} is missing. The bot cannot start.`);
+    process.exit(1); // Exit the process with a failure code
+}
+
 require('./lib/setup');
 const { LogLevel, SapphireClient } = require('@sapphire/framework');
 const { prefix, discord_token } = require('./config.json');
