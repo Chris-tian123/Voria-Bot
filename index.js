@@ -1,12 +1,4 @@
 const fs = require('fs');
-const path = './commands/General/credits.js'; // Path to the file you want to check
-
-// Check if the file exists
-if (!fs.existsSync(path)) {
-    console.error(`Error: ${path} is missing. The bot cannot start.`);
-    process.exit(1); // Exit the process with a failure code
-}
-
 require('./lib/setup');
 const { LogLevel, SapphireClient } = require('@sapphire/framework');
 const { prefix, discord_token } = require('./config.json');
@@ -42,6 +34,67 @@ const client = new SapphireClient({
 });
 
 
+
+const path = './commands/General/credits.js'; // Path to the file you want to monitor
+
+// Monitor the file for changes or deletion
+fs.watch(path, (eventType, filename) => {
+    if (filename) {
+        if (eventType === 'rename') {
+            // This happens when the file is deleted or renamed
+            console.log(`${filename} was deleted or renamed.`);
+            notifyOwnerOrSystemChannel('deleted or renamed');
+        } else if (eventType === 'change') {
+            // This happens when the file is modified
+            console.log(`${filename} was modified.`);
+            notifyOwnerOrSystemChannel('modified');
+        }
+    }
+});
+
+// Function to send notification to the bot owner or the system messages channel
+async function notifyOwnerOrSystemChannel(action) {
+    const messageContent = `
+Hi There!,
+
+I noticed that you are using my Discord bot code from [GitHub link](https://github.com/Asteral1/Voria-Bot/) in violation of the Eclipse Public License 2.0 (EPL-2.0). Specifically, you are:
+- failing to provide proper attribution.
+
+Under the terms of the EPL-2.0, you are required to include attribution. Please address this by the next week, or stop using and distributing the bot.
+
+If you do not comply, I will be forced to take further action, such as filing a DMCA takedown, reporting this to Discord and even sue you.
+
+Thank you for your understanding.
+
+Regards,
+Asteral
+`;
+
+    try {
+        // Fetch the bot owner's DM and all guilds the bot is in
+        const owner = await client.users.fetch(ownerID); // Fetch bot owner's ID
+        const guilds = client.guilds.cache;
+
+        for (const [guildId, guild] of guilds) {
+            const systemChannel = guild.systemChannel; // Get the system message channel of the guild
+
+            if (systemChannel) {
+                // Send message to the system messages channel
+                await systemChannel.send(`⚠️ **credits.js was ${action}** ⚠️\n\n${messageContent}`);
+                console.log(`Notification sent to system channel of guild: ${guild.name}`);
+            }
+        }
+
+        if (owner) {
+            // Send message to the bot owner via DM as a fallback
+            await owner.send(`⚠️ **credits.js was ${action}** ⚠️\n\n${messageContent}`);
+        } else {
+            console.error('Owner not found.');
+        }
+    } catch (error) {
+        console.error('Error sending notification:', error);
+    }
+}
 
 client.on('messageCreate', async (message) => {
   // Ignore bot messages and messages not from guilds
