@@ -29,5 +29,3 @@ To run Voria, you need to modify some data in the files named below
 config.json
 
 lib/database.js
-
-listeners/messages/guildMemberAdd.js
