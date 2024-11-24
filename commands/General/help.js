@@ -15,18 +15,15 @@ class HelpCommand extends Command {
   async messageRun(message) {
     const { member, guild } = message;
 
-    // Initialize command arrays
     const generalCommands = [];
     const modCommands = [];
     const utilityCommands = [];
     const devCommands = [];
 
-    // Get all commands
     const commands = this.container.stores.get('commands');
 
-    // Categorize commands based on metadata
     commands.forEach(command => {
-      const category = command.options.category || 'general';  // Default to 'general'
+      const category = command.options.category || 'general'; // Default to 'general'
 
       const commandDisplay = `\`${command.name}\``;
       const aliasDisplay = command.aliases.length ? ` [**${command.aliases.join(', ')}**]` : '';
@@ -47,7 +44,6 @@ class HelpCommand extends Command {
       }
     });
 
-    // Determine which embeds to send based on permissions
     if (member.permissions.has(PermissionsBitField.Flags.SendMessages)) {
       const generalEmbed = new EmbedBuilder()
         .setTitle('Help Menu')
@@ -84,10 +80,10 @@ class HelpCommand extends Command {
       await send(message, { embeds: [utilityEmbed] });
     }
 
-    if (['870366927653056582', '843081146417020960', '1053012080812359750'].includes(message.author.id)) {
+    if (await this.container.client.preconditions.run(message, this, ['OnlyOwner']).success) {
       const devEmbed = new EmbedBuilder()
         .setTitle('Help Menu')
-        .setDescription('List of available dev commands')
+        .setDescription('List of available developer commands')
         .setColor('#FFD700')
         .setThumbnail(guild.iconURL())
         .addFields({ name: 'Dev Commands', value: devCommands.join(', ') })
